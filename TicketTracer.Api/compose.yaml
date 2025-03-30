@@ -1,0 +1,6 @@
+﻿services:
+  tickettracer.api:
+    image: tickettracer.api
+    build:
+      context: .
+      dockerfile: TicketTracer.Api/Dockerfile
