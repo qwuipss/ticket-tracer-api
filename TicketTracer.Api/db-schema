@@ -5,7 +5,7 @@ Project ticket_tracer {
 
 Table users {
   id uuid [primary key]
-  email varchar(64) [not null]
+  email varchar(64) [not null, unique]
   password_hash varchar(64) [not null]
   name varchar(32) [not null]
   surname varchar(32) [not null]
