@@ -1,6 +1,6 @@
 Project ticket_tracer {
   database_type: 'PostgreSQL'
-  Note: 'ticket-tracer-v1.0'
+  Note: 'ticket-tracer-v1.1'
 }
 
 Table users {
@@ -9,8 +9,6 @@ Table users {
   password_hash varchar(64) [not null]
   name varchar(32) [not null]
   surname varchar(32) [not null]
-  patronymic varchar(32) [not null]
-  created_at timestamp [not null]
 }
 
 Table projects {
@@ -18,9 +16,15 @@ Table projects {
   name varchar(64) [not null]
 }
 
-Table tickets {
+Table tables {
   id uuid [primary key]
   project_id uuid [not null, ref: > projects.id]
+  name varchar(64) [not null]
+}
+
+Table tickets {
+  id uuid [primary key]
+  table_id uuid [not null, ref: > tables.id]
   title varchar(64) [not null]
   description varchar(8192) [null]
   author uuid [not null, ref: > users.id]
@@ -37,7 +41,7 @@ Table ticket_comments {
 
 Table attributes {
   id uuid [primary key]
-  project_id uuid [not null, ref: > projects.id]
+  project_id uuid [not null, ref: > tables.id]
   name varchar(32) [not null]
   type attribute_type [not null]
 }
@@ -49,7 +53,7 @@ Table attribute_values {
 }
 
 enum attribute_type {
-  free_text
+  text
   users
-  defined_list
+  list
 }
