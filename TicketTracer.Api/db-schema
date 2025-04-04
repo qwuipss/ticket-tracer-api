@@ -24,7 +24,7 @@ Table boards {
 
 Table tickets {
   id uuid [primary key]
-  table_id uuid [not null, ref: > boards.id]
+  board_id uuid [not null, ref: > boards.id]
   title varchar(64) [not null]
   description varchar(8192) [null]
   author uuid [not null, ref: > users.id]
@@ -41,7 +41,7 @@ Table ticket_comments {
 
 Table attributes {
   id uuid [primary key]
-  project_id uuid [not null, ref: > boards.id]
+  board_id uuid [not null, ref: > boards.id]
   name varchar(32) [not null]
   type attribute_type [not null]
 }
