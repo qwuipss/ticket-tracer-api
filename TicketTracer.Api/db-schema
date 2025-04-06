@@ -1,6 +1,6 @@
 Project ticket_tracer {
   database_type: 'PostgreSQL'
-  Note: 'ticket-tracer-v1.1'
+  Note: 'ticket-tracer-v1.2'
 }
 
 Table users {
@@ -13,13 +13,13 @@ Table users {
 
 Table projects {
   id uuid [primary key]
-  name varchar(64) [not null]
+  name varchar(64) [not null, unique]
 }
 
 Table boards {
   id uuid [primary key]
   project_id uuid [not null, ref: > projects.id]
-  name varchar(64) [not null]
+  name varchar(64) [not null, unique, note: "Unique in context of one project"]
 }
 
 Table tickets {
@@ -42,7 +42,8 @@ Table ticket_comments {
 Table attributes {
   id uuid [primary key]
   board_id uuid [not null, ref: > boards.id]
-  name varchar(32) [not null]
+  name varchar(32) [not null, unique, note: "Unique in context of one board"]
+  is_editable bool [not null]
   type attribute_type [not null]
 }
 
