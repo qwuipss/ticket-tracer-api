@@ -1,6 +1,6 @@
 Project ticket_tracer {
   database_type: 'PostgreSQL'
-  Note: 'ticket-tracer-v1.2'
+  Note: 'ticket-tracer-v1.3'
 }
 
 Table users {
@@ -51,6 +51,13 @@ Table attribute_values {
   id uuid [primary key]
   attribute_id uuid [not null, ref: > attributes.id]
   value varchar(32) [not null]
+}
+
+Table ticket_attribute_values {
+  id uuid [primary key]
+  ticket_id uuid [not null, ref: > tickets.id]
+  attribute_id uuid [not null, ref: > attributes.id]
+  attribute_value_id uuid [ref: > attribute_values.id]
 }
 
 enum attribute_type {
