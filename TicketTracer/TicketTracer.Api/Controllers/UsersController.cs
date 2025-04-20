@@ -1,6 +1,7 @@
 using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using TicketTracer.Api.Services;
 
 namespace TicketTracer.Api.Controllers;
 
