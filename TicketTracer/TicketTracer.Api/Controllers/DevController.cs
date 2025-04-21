@@ -3,12 +3,19 @@ using Microsoft.AspNetCore.Mvc;
 namespace TicketTracer.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]/[action]")]
 public class DevController : ControllerBase
 {
-    [Route("[action]")]
+    [HttpGet]
     public void Throw()
     {
         throw new Exception("A development exception");
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> Delay()
+    {
+        await Task.Delay(Random.Shared.Next(100, 500));
+        return Ok();
     }
 }

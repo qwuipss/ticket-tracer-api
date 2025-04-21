@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Net;
 using System.Net.Mime;
 using TicketTracer.Api.Services;
 
@@ -7,9 +6,9 @@ namespace TicketTracer.Api.Middlewares;
 
 public class ExceptionLoggingMiddleware(RequestDelegate next, ISentryService sentryService, ILogger<ExceptionLoggingMiddleware> logger)
 {
+    private readonly ILogger<ExceptionLoggingMiddleware> _logger = logger;
     private readonly RequestDelegate _next = next;
     private readonly ISentryService _sentryService = sentryService;
-    private readonly ILogger<ExceptionLoggingMiddleware> _logger = logger;
 
     public async Task InvokeAsync(HttpContext context)
     {

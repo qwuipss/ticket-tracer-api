@@ -135,3 +135,6 @@ _NCrunch*
 
 grafana/
 prometheus/data
+logs/
+
+appsettings*.json

@@ -7,7 +7,8 @@ public static class MetricsConfigurator
 {
     public static void AddMetrics(this IServiceCollection services)
     {
-        services.AddOpenTelemetry()
+        services
+            .AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(AppOptions.ResourceName))
             .WithMetrics(
                 metrics => metrics

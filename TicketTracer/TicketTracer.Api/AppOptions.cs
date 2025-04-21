@@ -1,6 +1,6 @@
 namespace TicketTracer.Api;
 
-public class AppOptions
+public static class AppOptions
 {
     public const string ResourceName = "ticket-tracer-api";
 }

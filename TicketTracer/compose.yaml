@@ -8,7 +8,10 @@
       - "8080:8080"
     networks:
       - monitoring
-
+    volumes:
+      - ./TicketTracer.Api/logs:/app/logs:z # chmod 644 -R ./TicketTracer.Api/logs
+    restart: unless-stopped
+  
   prometheus:
     image: prom/prometheus:v3.3.0-rc.1
     container_name: ticket-tracer-prometheus
@@ -20,7 +23,7 @@
       - '--storage.tsdb.path=/prometheus'
     volumes:
       - ./prometheus/data:/prometheus:z
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chown 65534 -R prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chmod 647 -R prometheus
     networks:
       - monitoring
     restart: unless-stopped
@@ -35,7 +38,7 @@
       - GF_SECURITY_ADMIN_USER=qwuipss
       - GF_SECURITY_ADMIN_PASSWORD=qwuipss!
     volumes:
-      - ./grafana/data:/var/lib/grafana:z # chown 472 -R grafana
+      - ./grafana/data:/var/lib/grafana:z # chmod 647 -R grafana
     networks:
       - monitoring
     restart: unless-stopped
