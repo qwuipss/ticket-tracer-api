@@ -6,7 +6,7 @@ namespace TicketTracer.Api.Middlewares;
 public class TraceContextPropagatingMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;
-    
+
     public async Task InvokeAsync(HttpContext context)
     {
         var traceId = Activity.Current?.TraceId.ToString();
