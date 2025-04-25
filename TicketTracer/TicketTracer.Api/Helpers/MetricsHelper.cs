@@ -1,6 +1,6 @@
 namespace TicketTracer.Api.Helpers;
 
-public static class MetricsHelper
+internal static class MetricsHelper
 {
     public static KeyValuePair<string, object?> CreateTag(string key, string value)
     {

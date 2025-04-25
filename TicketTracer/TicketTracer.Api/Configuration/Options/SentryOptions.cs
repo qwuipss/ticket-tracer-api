@@ -2,11 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TicketTracer.Api.Configuration.Options;
 
-public class SentryOptions
+internal class SentryOptions
 {
     public const string SectionName = "Sentry";
 
-    [Required]
+    [Required(AllowEmptyStrings = false)]
     public string BotToken { get; init; } = null!;
 
     [Required]

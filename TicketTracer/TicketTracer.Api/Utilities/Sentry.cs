@@ -6,15 +6,15 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using TicketTracer.Api.Configuration.Options;
 
-namespace TicketTracer.Api.Services;
+namespace TicketTracer.Api.Utilities;
 
-public class SentryService : ISentryService
+internal class Sentry : ISentry
 {
     private readonly TelegramBotClient _botClient;
-    private readonly ILogger<SentryService> _logger;
+    private readonly ILogger<Sentry> _logger;
     private readonly IOptions<SentryOptions> _options;
 
-    public SentryService(IOptions<SentryOptions> options, ILogger<SentryService> logger)
+    public Sentry(IOptions<SentryOptions> options, ILogger<Sentry> logger)
     {
         _options = options;
         _logger = logger;

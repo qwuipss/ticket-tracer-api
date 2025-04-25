@@ -4,7 +4,7 @@ using TicketTracer.Api.Helpers;
 
 namespace TicketTracer.Api.Middlewares;
 
-public class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
 {
     private static readonly Histogram<double> RequestDurationMsHistogram = new Meter(AppOptions.ResourceName).CreateHistogram<double>("request_duration_ms");
     private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
@@ -13,17 +13,13 @@ public class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggi
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var controller = context.GetRouteValue("controller")?.ToString();
-        var action = context.GetRouteValue("action")?.ToString();
-
         var request = context.Request;
-        var isApiTarget = controller is not null && action is not null;
-        var path = isApiTarget ? $"{controller}/{action}" : request.Path.Value;
+        var path = $"{request.Path.Value}{request.QueryString.Value}";
 
         _logger.LogInformation(
-            "Start executing request: {method} {protocol} {path}",
-            request.Method,
+            "Request started: {protocol} {method} {path}",
             request.Protocol,
+            request.Method,
             path
         );
 
@@ -34,16 +30,20 @@ public class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggi
         var elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
 
         _logger.LogInformation(
-            "Request finished: {method} {protocol} {path}. {elapsedMs}ms",
-            request.Method,
+            "Request finished: {protocol} {method} {path}. Code: {code}. {elapsedMs}ms",
             request.Protocol,
+            request.Method,
             path,
+            context.Response.StatusCode,
             elapsedMs
         );
+        
+        var controller = context.GetRouteValue("controller")?.ToString();
+        var action = context.GetRouteValue("action")?.ToString();
 
-        if (isApiTarget)
+        if (controller is not null && action is not null)
         {
-            ReportRequestDuration(elapsedMs, controller!, action!);
+            ReportRequestDuration(elapsedMs, controller, action);
         }
     }
 

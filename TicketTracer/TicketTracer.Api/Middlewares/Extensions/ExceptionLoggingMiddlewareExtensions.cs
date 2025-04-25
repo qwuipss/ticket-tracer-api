@@ -1,6 +1,6 @@
 namespace TicketTracer.Api.Middlewares.Extensions;
 
-public static class ExceptionLoggingMiddlewareExtensions
+internal static class ExceptionLoggingMiddlewareExtensions
 {
     public static void UseExceptionLoggingMiddleware(this IApplicationBuilder app)
     {

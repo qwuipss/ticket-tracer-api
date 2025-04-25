@@ -3,7 +3,7 @@ using OpenTelemetry.Resources;
 
 namespace TicketTracer.Api.Configuration;
 
-public static class MetricsConfigurator
+internal static class MetricsConfigurator
 {
     public static void AddMetrics(this IServiceCollection services)
     {

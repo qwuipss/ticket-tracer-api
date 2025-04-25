@@ -3,7 +3,7 @@ using Serilog.Context;
 
 namespace TicketTracer.Api.Middlewares;
 
-public class TraceContextPropagatingMiddleware(RequestDelegate next)
+internal class TraceContextPropagatingMiddleware(RequestDelegate next)
 {
     private readonly RequestDelegate _next = next;
 

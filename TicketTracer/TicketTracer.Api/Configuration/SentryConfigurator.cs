@@ -1,13 +1,13 @@
 using TicketTracer.Api.Configuration.Options;
-using TicketTracer.Api.Services;
+using TicketTracer.Api.Utilities;
 
 namespace TicketTracer.Api.Configuration;
 
-public static class SentryConfigurator
+internal static class SentryConfigurator
 {
     public static void AddSentry(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ISentryService, SentryService>();
+        services.AddSingleton<ISentry, Sentry>();
         services
             .AddOptions<SentryOptions>()
             .Bind(configuration.GetSection(SentryOptions.SectionName))

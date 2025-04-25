@@ -1,14 +1,15 @@
 using System.Diagnostics;
 using System.Net.Mime;
-using TicketTracer.Api.Services;
+using TicketTracer.Api.Models.Response;
+using TicketTracer.Api.Utilities;
 
 namespace TicketTracer.Api.Middlewares;
 
-public class ExceptionLoggingMiddleware(RequestDelegate next, ISentryService sentryService, ILogger<ExceptionLoggingMiddleware> logger)
+internal class ExceptionLoggingMiddleware(RequestDelegate next, ISentry sentry, ILogger<ExceptionLoggingMiddleware> logger)
 {
     private readonly ILogger<ExceptionLoggingMiddleware> _logger = logger;
     private readonly RequestDelegate _next = next;
-    private readonly ISentryService _sentryService = sentryService;
+    private readonly ISentry _sentry = sentry;
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -22,7 +23,7 @@ public class ExceptionLoggingMiddleware(RequestDelegate next, ISentryService sen
 
             try
             {
-                await _sentryService.ReportAsync(exc);
+                await _sentry.ReportAsync(exc);
             }
             catch (Exception reportExc)
             {
@@ -32,7 +33,7 @@ public class ExceptionLoggingMiddleware(RequestDelegate next, ISentryService sen
             context.Response.StatusCode = 500;
             context.Response.ContentType = MediaTypeNames.Application.Json;
 
-            var response = new
+            var response = new UnhandledExceptionModel
             {
                 TraceId = Activity.Current!.TraceId.ToString(),
                 Message = "An error occured during request execution",

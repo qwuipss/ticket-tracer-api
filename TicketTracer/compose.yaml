@@ -9,25 +9,43 @@
     networks:
       - monitoring
     volumes:
-      - ./TicketTracer.Api/logs:/app/logs:z # chmod 644 -R ./TicketTracer.Api/logs
+      - ./TicketTracer.Api/logs:/app/logs:z # chmod 642 -R ./TicketTracer.Api/logs
     restart: unless-stopped
   
   prometheus:
     image: prom/prometheus:v3.3.0-rc.1
     container_name: ticket-tracer-prometheus
     user: "65534"
+    # dev only
     ports:
       - "9090:9090"
+    #
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
     volumes:
       - ./prometheus/data:/prometheus:z
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chmod 647 -R prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chown 65534 -R prometheus
     networks:
       - monitoring
     restart: unless-stopped
 
+  postgres:
+    image: postgres:15
+    container_name: ticket-tracer-postgres
+    # dev only
+    ports:
+      - "5432:5432"
+    #
+    environment:
+      POSTGRES_USER: ticket_tracer_api
+      POSTGRES_PASSWORD: ticket_tracer_api
+      POSTGRES_DB: ticket_tracer
+    volumes:
+      - ./postgres:/var/lib/postgresql/data:z
+    restart: unless-stopped
+
+  # dev only
   grafana:
     image: grafana/grafana:11.6.0
     container_name: ticket-tracer-grafana
@@ -35,13 +53,14 @@
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=qwuipss
-      - GF_SECURITY_ADMIN_PASSWORD=qwuipss!
+      - GF_SECURITY_ADMIN_USER=tt
+      - GF_SECURITY_ADMIN_PASSWORD=tt
     volumes:
-      - ./grafana/data:/var/lib/grafana:z # chmod 647 -R grafana
+      - ./grafana/data:/var/lib/grafana:z # chown 472 -R grafana
     networks:
       - monitoring
     restart: unless-stopped
+  #
 
 networks:
   monitoring:

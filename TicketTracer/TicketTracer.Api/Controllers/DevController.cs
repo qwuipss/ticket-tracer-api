@@ -4,7 +4,7 @@ namespace TicketTracer.Api.Controllers;
 
 [ApiController]
 [Route("[controller]/[action]")]
-public class DevController : ControllerBase
+internal class DevController : ControllerBase
 {
     [HttpGet]
     public void Throw()

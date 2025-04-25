@@ -8,7 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0"/>
+        <PackageReference Include="OneOf" Version="3.0.271" />
         <PackageReference Include="OpenTelemetry" Version="1.11.2"/>
         <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.11.2-beta.1"/>
         <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.11.2"/>
@@ -24,9 +26,17 @@
             <Link>.dockerignore</Link>
         </Content>
     </ItemGroup>
-
+    
     <ItemGroup>
         <Folder Include="logs\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="TicketTracer.Tests" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\TicketTracer.Data\TicketTracer.Data.csproj" />
     </ItemGroup>
 
 </Project>
