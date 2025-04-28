@@ -36,12 +36,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="appsettings.json">
-            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <InternalsVisibleTo Include="TicketTracer.Tests"/>
     </ItemGroup>
 
