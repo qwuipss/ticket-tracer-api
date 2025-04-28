@@ -8,9 +8,12 @@
       - "8080:8080"
     networks:
       - monitoring
+      - database
     volumes:
       - ./TicketTracer.Api/logs:/app/logs:z # chmod 642 -R ./TicketTracer.Api/logs
     restart: unless-stopped
+    depends_on:
+      - postgres
   
   prometheus:
     image: prom/prometheus:v3.3.0-rc.1
@@ -23,10 +26,12 @@
       - '--storage.tsdb.path=/prometheus'
     volumes:
       - ./prometheus/data:/prometheus:z
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chown 65534 -R prometheus && chmod 777 -R prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chmod 777 -R prometheus
     networks:
       - monitoring
     restart: unless-stopped
+    depends_on:
+      - ticket-tracer-api
 
   postgres:
     image: postgres:15
@@ -41,6 +46,8 @@
       POSTGRES_DB: ticket_tracer
     volumes:
       - ./postgres:/var/lib/postgresql/data:z
+    networks:
+      - database
     restart: unless-stopped
 
   # dev only
@@ -62,4 +69,6 @@
 
 networks:
   monitoring:
+    driver: bridge
+  database:
     driver: bridge
