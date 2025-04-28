@@ -16,10 +16,8 @@
     image: prom/prometheus:v3.3.0-rc.1
     container_name: ticket-tracer-prometheus
     user: "65534"
-    # dev only
     ports:
       - "9090:9090"
-    #
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'

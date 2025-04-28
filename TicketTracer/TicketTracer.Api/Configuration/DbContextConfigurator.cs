@@ -12,8 +12,7 @@ internal static class DbContextConfigurator
             {
                 optionsBuilder.UseNpgsql(
                     configuration.GetConnectionString("Postgres")
-                    ?? throw new ArgumentNullException(
-                        nameof(configuration),
+                    ?? throw new ArgumentException(
                         "Database connection string is missing"
                     ),
                     builder => builder.MigrationsAssembly(typeof(TicketTracerDbContext).Assembly.FullName)

@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using TicketTracer.Api.Configuration;
 using TicketTracer.Api.Middlewares.Extensions;
+using TicketTracer.Data;
 
 namespace TicketTracer.Api;
 
@@ -18,7 +20,7 @@ internal class Program
         builder.Services.AddServices();
         builder.Services.AddDbContext(builder.Configuration);
         builder.Services.AddAuth();
-        builder.Services.AddOpenApi("v1");
+        builder.Services.AddOpenApi("document");
         builder.Services.AddCors(builder.Configuration);
         ControllersConfigurator.AddControllers(builder.Services);
         MetricsConfigurator.AddMetrics(builder.Services);
@@ -29,9 +31,12 @@ internal class Program
 
         var app = builder.Build();
 
+        MigrateDatabase(app);
+
         app.MapOpenApi();
         app.MapControllers();
 
+        app.UsePathBase(builder.Configuration.GetValue<string>("PathBase") ?? throw new ArgumentException("'PathBase' setting is missing"));
         app.UseExceptionLoggingMiddleware();
         app.UseTraceContextPropagatingMiddleware();
         app.UseRequestLogging();
@@ -41,5 +46,12 @@ internal class Program
         app.UseAuthorization();
 
         app.Run();
+    }
+
+    private static void MigrateDatabase(WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TicketTracerDbContext>();
+        dbContext.Database.Migrate();
     }
 }
