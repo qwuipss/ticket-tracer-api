@@ -8,13 +8,13 @@ namespace TicketTracer.Tests.Api.Services;
 [TestFixture]
 internal class PasswordHasher_Tests
 {
-    private PasswordsManager hasher = null!;
-
     [SetUp]
     public void SetUp()
     {
         hasher = new PasswordsManager();
     }
+
+    private PasswordsManager hasher = null!;
 
     [TestCase("password1", "salt1")]
     [TestCase("password2", "salt2")]

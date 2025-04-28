@@ -7,8 +7,9 @@ namespace TicketTracer.Api.Middlewares;
 internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
 {
     private static readonly Histogram<double> RequestDurationMsHistogram = new Meter(AppOptions.ResourceName).CreateHistogram<double>("request_duration_ms");
-    private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
+    private static readonly Counter<int> RequestsCount = new Meter(AppOptions.ResourceName).CreateCounter<int>("requests_count");
 
+    private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
     private readonly RequestDelegate _next = next;
 
     public async Task InvokeAsync(HttpContext context)
@@ -37,20 +38,26 @@ internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLog
             context.Response.StatusCode,
             elapsedMs
         );
-        
+
         var controller = context.GetRouteValue("controller")?.ToString();
         var action = context.GetRouteValue("action")?.ToString();
 
         if (controller is not null && action is not null)
         {
-            ReportRequestDuration(elapsedMs, controller, action);
+            RecordRequestMetrics(elapsedMs, controller, action);
         }
     }
 
-    private static void ReportRequestDuration(double elapsedMs, string controller, string action)
+    private static void RecordRequestMetrics(double elapsedMs, string controller, string action)
     {
         RequestDurationMsHistogram.Record(
             elapsedMs,
+            MetricsHelper.CreateTag("controller", controller),
+            MetricsHelper.CreateTag("action", action)
+        );
+
+        RequestsCount.Add(
+            1,
             MetricsHelper.CreateTag("controller", controller),
             MetricsHelper.CreateTag("action", action)
         );

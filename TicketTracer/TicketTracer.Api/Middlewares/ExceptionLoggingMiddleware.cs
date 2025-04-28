@@ -17,6 +17,9 @@ internal class ExceptionLoggingMiddleware(RequestDelegate next, ISentry sentry, 
         {
             await _next(context);
         }
+        catch (OperationCanceledException)
+        {
+        }
         catch (Exception exc)
         {
             _logger.LogError(exc, "An unhandled error occurred:");

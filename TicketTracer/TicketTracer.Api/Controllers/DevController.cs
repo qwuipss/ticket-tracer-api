@@ -1,3 +1,4 @@
+#if DEBUG
 using Microsoft.AspNetCore.Mvc;
 
 namespace TicketTracer.Api.Controllers;
@@ -19,3 +20,4 @@ internal class DevController : ControllerBase
         return Ok();
     }
 }
+#endif

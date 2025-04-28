@@ -7,11 +7,11 @@ internal static class SentryConfigurator
 {
     public static void AddSentry(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ISentry, Sentry>();
         services
-            .AddOptions<SentryOptions>()
+            .AddOptionsWithValidateOnStart<SentryOptions>()
             .Bind(configuration.GetSection(SentryOptions.SectionName))
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
+            .ValidateDataAnnotations();
+
+        services.AddSingleton<ISentry, Sentry>();
     }
 }

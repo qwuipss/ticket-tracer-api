@@ -8,10 +8,17 @@ internal static class DbContextConfigurator
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<TicketTracerDbContext>(
-            options =>
+            optionsBuilder =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("Postgres"));
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                optionsBuilder.UseNpgsql(
+                    configuration.GetConnectionString("Postgres")
+                    ?? throw new ArgumentNullException(
+                        nameof(configuration),
+                        "Database connection string is missing"
+                    ),
+                    builder => builder.MigrationsAssembly(typeof(TicketTracerDbContext).Assembly.FullName)
+                );
+                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             }
         );
     }

@@ -6,6 +6,9 @@ internal static class RepositoriesConfigurator
 {
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddTransient<IUsersRepository, UsersRepository>();
+        services.AddScoped<IProjectsRepository, ProjectsRepository>();
+        services.AddScoped<IBoardsRepository, BoardsRepository>();
+        services.AddScoped<ITicketsRepository, TicketsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
     }
 }

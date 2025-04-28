@@ -1,28 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using TicketTracer.Api.Repositories.Abstract;
 using TicketTracer.Data;
-using TicketTracer.Data.Models;
+using TicketTracer.Data.Entities;
 
 namespace TicketTracer.Api.Repositories;
 
-internal class UsersRepository(TicketTracerDbContext dbContext, ILogger<UsersRepository> logger)
-    : BaseRepository<UserDbo>(dbContext, logger), IUsersRepository
+internal class UsersRepository(TicketTracerDbContext dbContext)
+    : BaseRepository<UserEntity>(dbContext), IUsersRepository
 {
-    public async Task<Guid> AddUserAsync(UserDbo dbo)
+    public async Task<bool> IsExistAsync(string email, CancellationToken cancellationToken)
     {
-        var entry = await DbContext.Users.AddAsync(dbo);
-        await DbContext.SaveChangesAsync();
-        return entry.Entity.Id;
+        return await DbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
     }
 
-    public async Task<bool> IsUserExistAsync(string email)
+    public async Task<UserEntity?> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        return await DbContext.Users.AnyAsync(u => u.Email == email);
-    }
-
-    public async Task<UserDbo?> GetUserByEmailAsync(string email)
-    {
-        var user = await DbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
-        return user;
+        return await DbContext.Users.FirstOrDefaultAsync(u => u.Email == email && !u.IsDeleted, cancellationToken);
     }
 }

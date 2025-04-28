@@ -1,26 +1,43 @@
+using Microsoft.EntityFrameworkCore;
 using TicketTracer.Data;
-using TicketTracer.Data.Models.Abstract;
+using TicketTracer.Data.Entities.Abstract;
 
 namespace TicketTracer.Api.Repositories.Abstract;
 
-internal abstract class BaseRepository<TEntity>(TicketTracerDbContext dbContext, ILogger logger) : IBaseRepository<TEntity>
-    where TEntity : BaseDbo
+internal abstract class BaseRepository<TEntity>(TicketTracerDbContext dbContext) : IBaseRepository<TEntity>
+    where TEntity : BaseEntity
 {
     protected readonly TicketTracerDbContext DbContext = dbContext;
 
-    private readonly ILogger _logger = logger;
-
-    public async Task<TEntity?> GetByIdAsync(Guid id)
+    public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await DbContext.Set<TEntity>().FindAsync(id);
+        return await DbContext.Set<TEntity>().Where(e => e.Id == id && !e.IsDeleted).SingleAsync(cancellationToken);
+    }
 
-        if (entity?.IsDeleted is false)
-        {
-            return entity;
-        }
+    public async Task<List<TEntity>> GetAllAsync(int offset, int limit, CancellationToken cancellationToken)
+    {
+        return await DbContext
+                     .Set<TEntity>()
+                     .OrderBy(p => p.CreatedAt)
+                     .Skip(offset)
+                     .Take(limit)
+                     .ToListAsync(cancellationToken);
+    }
 
-        _logger.LogWarning("Entity with specified id ({id}) was found but marked as deleted", id);
+    public async Task<Guid> AddAsync(TEntity entity, CancellationToken cancellationToken)
+    {
+        var entry = await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+        await SaveChangesAsync(cancellationToken);
+        return entry.Entity.Id;
+    }
 
-        return null;
+    public async Task<bool> IsExistAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await DbContext.Set<TEntity>().Where(e => e.Id == id && !e.IsDeleted).AnyAsync(cancellationToken);
+    }
+
+    private async Task SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        await DbContext.SaveChangesAsync(cancellationToken);
     }
 }
