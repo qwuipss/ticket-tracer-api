@@ -33,7 +33,12 @@
 
     <ItemGroup>
         <Folder Include="logs\"/>
-        <Folder Include="obj\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
