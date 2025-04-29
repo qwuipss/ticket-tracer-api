@@ -14,7 +14,7 @@ internal class UsersController(ILogger<UsersController> logger, IUsersService us
 
     #region Get
 
-    [HttpPost] [Route("{id:guid}", Name = ControllerRoutes.GetUserById)]
+    [HttpGet] [Route("{id:guid}", Name = ControllerRoutes.GetUserById)]
     [ProducesResponseType<UserModel>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdAsync(Guid id)
