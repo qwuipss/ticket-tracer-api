@@ -5,7 +5,7 @@
       dockerfile: TicketTracer.Api/Dockerfile
     container_name: ticket-tracer-api
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     networks:
       - monitoring
       - database
@@ -20,7 +20,7 @@
     container_name: ticket-tracer-prometheus
     user: "65534"
     ports:
-      - "9090:9090"
+      - "127.0.0.1:9090:9090"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
