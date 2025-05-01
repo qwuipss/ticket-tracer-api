@@ -10,5 +10,6 @@ internal static class ServicesConfigurator
         services.AddScoped<IBoardsService, BoardsService>();
         services.AddScoped<ITicketsService, TicketsService>();
         services.AddScoped<IAccountsService, AccountsService>();
+        services.AddScoped<IUsersService, UsersService>();
     }
 }
