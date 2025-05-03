@@ -37,11 +37,11 @@ internal class Program
         app.MapControllers();
 
         app.UsePathBase(builder.Configuration.GetValue<string>("PathBase") ?? throw new ArgumentException("'PathBase' setting is missing"));
+        app.UseCors();
         app.UseExceptionLoggingMiddleware();
         app.UseTraceContextPropagatingMiddleware();
         app.UseRequestLogging();
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
-        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
 
