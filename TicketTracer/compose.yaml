@@ -24,6 +24,7 @@
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=3d'
     volumes:
       - ./prometheus/data:/prometheus:z
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z,ro # chmod 777 -R prometheus && chown 65534 -R prometheus

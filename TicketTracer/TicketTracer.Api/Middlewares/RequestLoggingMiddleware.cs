@@ -6,7 +6,7 @@ namespace TicketTracer.Api.Middlewares;
 
 internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
 {
-    private static readonly Histogram<double> RequestDurationMsHistogram = new Meter(AppOptions.ResourceName).CreateHistogram<double>("request_duration_ms");
+    private static readonly Histogram<double> RequestDurationMsHistogram = new Meter(AppOptions.ResourceName).CreateHistogram<double>("requests_duration_ms");
     private static readonly Counter<int> RequestsCount = new Meter(AppOptions.ResourceName).CreateCounter<int>("requests_count");
 
     private readonly ILogger<RequestLoggingMiddleware> _logger = logger;
