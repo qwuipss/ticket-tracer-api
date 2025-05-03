@@ -16,8 +16,7 @@ internal static class CorsConfigurator
         services.AddCors(
             options =>
             {
-                options.AddPolicy(
-                    CorsPolicies.FrontendClient,
+                options.AddDefaultPolicy(
                     policy =>
                     {
                         policy
@@ -30,9 +29,4 @@ internal static class CorsConfigurator
             }
         );
     }
-}
-
-internal static class CorsPolicies
-{
-    public const string FrontendClient = "FrontendClient";
 }

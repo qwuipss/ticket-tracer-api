@@ -41,7 +41,7 @@ internal class Program
         app.UseTraceContextPropagatingMiddleware();
         app.UseRequestLogging();
         app.UseOpenTelemetryPrometheusScrapingEndpoint();
-        app.UseCors(CorsPolicies.FrontendClient);
+        app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
 
