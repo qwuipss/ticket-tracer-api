@@ -11,5 +11,6 @@ internal static class ServicesConfigurator
         services.AddScoped<ITicketsService, TicketsService>();
         services.AddScoped<IAccountsService, AccountsService>();
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IAttributesValuesService, AttributesValuesService>();
     }
 }

@@ -8,7 +8,6 @@ namespace TicketTracer.Api.Models.Common;
 internal class ProjectModel : WithIdModel
 {
     [MaybeNull]
-    [MinLength(1)]
     [MaxLength(EntityConstraints.Project.TitleMaxLength)]
     public string Title { get; init; }
 }

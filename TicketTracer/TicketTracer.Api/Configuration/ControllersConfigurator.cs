@@ -9,8 +9,7 @@ internal static class ControllersConfigurator
     public static void AddControllers(this IServiceCollection services)
     {
         services
-            .AddControllers(
-                options => { options.Conventions.Add(new LowercaseControllerModelConvention()); }
+            .AddControllers(options => { options.Conventions.Add(new LowercaseControllerModelConvention()); }
             )
             .ConfigureApplicationPartManager(manager => { manager.FeatureProviders.Add(new ControllerFeatureProvider()); });
     }

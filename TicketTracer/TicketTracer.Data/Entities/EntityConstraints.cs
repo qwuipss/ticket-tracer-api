@@ -27,4 +27,14 @@ public static class EntityConstraints
 
         public const int SurnameMaxLength = 32;
     }
+
+    public static class Attribute
+    {
+        public const int NameMaxLength = 32;
+    }
+
+    public static class AttributeValue
+    {
+        public const int ValueMaxLength = 32;
+    }
 }

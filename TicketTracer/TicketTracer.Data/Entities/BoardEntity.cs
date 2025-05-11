@@ -8,7 +8,7 @@ using TicketTracer.Data.Entities.Abstract;
 namespace TicketTracer.Data.Entities;
 
 [Table("boards")]
-[Index(nameof(Title), IsUnique = true)]
+[Index(nameof(ProjectId), nameof(Title), IsUnique = true)]
 public class BoardEntity : BaseEntity
 {
     [Column("title")]

@@ -8,8 +8,7 @@ internal static class AuthConfigurator
     {
         services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(
-                options =>
+            .AddCookie(options =>
                 {
                     options.Cookie.Name = "ticket_tracer_auth";
                     options.Cookie.HttpOnly = true;

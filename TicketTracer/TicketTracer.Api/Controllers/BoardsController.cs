@@ -76,13 +76,22 @@ internal class BoardsController(
     public async Task<IActionResult> GetAllByProjectIdAsync(
         [FromQuery] [Required]
         Guid projectId,
-        [FromQuery] [Range(0, int.MaxValue)]
+        [FromQuery] [Required] [Range(0, int.MaxValue)]
         int offset,
         [FromQuery] [Range(0, RequestModelsConstraints.ItemsPerPageLimit)]
         int limit = 50
     )
     {
         var models = await _boardsService.GetAllByProjectIdAsync(projectId, offset, limit, HttpContext.RequestAborted);
+        return models is null ? NotFound() : Ok(models);
+    }
+
+    [HttpGet] [Route("{id:guid}/attributes")]
+    [ProducesResponseType<List<AttributeModel>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAttributesAsync([FromRoute] Guid id)
+    {
+        var models = await _boardsService.GetAttributesAsync(id, HttpContext.RequestAborted);
         return models is null ? NotFound() : Ok(models);
     }
 

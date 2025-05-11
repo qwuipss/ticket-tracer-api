@@ -36,7 +36,7 @@ internal abstract class BaseRepository<TEntity>(TicketTracerDbContext dbContext)
         return await DbContext.Set<TEntity>().Where(e => e.Id == id && !e.IsDeleted).AnyAsync(cancellationToken);
     }
 
-    private async Task SaveChangesAsync(CancellationToken cancellationToken)
+    protected async Task SaveChangesAsync(CancellationToken cancellationToken)
     {
         await DbContext.SaveChangesAsync(cancellationToken);
     }

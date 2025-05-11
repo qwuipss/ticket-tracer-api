@@ -10,7 +10,6 @@ namespace TicketTracer.Api.Models.Common;
 internal class BoardModel : WithIdModel
 {
     [MaybeNull]
-    [MinLength(1)]
     [MaxLength(EntityConstraints.Board.TitleMaxLength)]
     public string Title { get; set; }
 

@@ -67,6 +67,22 @@ internal class BoardsService(
         return models;
     }
 
+    public async Task<List<AttributeModel>?> GetAttributesAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var entities = await _boardsRepository.GetAttributesAsync(id, cancellationToken);
+
+        _logger.LogInformation("Retrieved {count} attributes", entities.Count);
+
+        if (entities.Count is 0)
+        {
+            return null;
+        }
+
+        var models = _mapper.Map<List<AttributeEntity>, List<AttributeModel>>(entities);
+
+        return models;
+    }
+
     public async Task<OneOf<BoardModel, BoardExistsModel, ProjectNotFoundModel>> CreateAsync(CreateBoardModel model, CancellationToken cancellationToken)
     {
         var isProjectExist = await _projectsRepository.IsExistAsync(model.ProjectId, cancellationToken);

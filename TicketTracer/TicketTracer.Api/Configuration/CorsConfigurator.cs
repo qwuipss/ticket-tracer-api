@@ -13,11 +13,9 @@ internal static class CorsConfigurator
 
         var corsOptions = configuration.GetSection(CorsOptions.SectionName).Get<CorsOptions>();
 
-        services.AddCors(
-            options =>
+        services.AddCors(options =>
             {
-                options.AddDefaultPolicy(
-                    policy =>
+                options.AddDefaultPolicy(policy =>
                     {
                         policy
                             .WithOrigins(corsOptions!.AllowedOrigins)

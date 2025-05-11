@@ -28,4 +28,53 @@ internal class TicketsRepository(TicketTracerDbContext dbContext) : BaseReposito
                      .Take(limit)
                      .ToListAsync(cancellationToken);
     }
+
+    public new async Task<TicketEntity> AddAsync(TicketEntity ticket, CancellationToken cancellationToken)
+    {
+        var attributeEntities = await DbContext
+                                      .Attributes.Where(a => a.BoardId == ticket.BoardId && !a.IsDeleted)
+                                      .ToListAsync(cancellationToken);
+
+        await using var transaction = await DbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        try
+        {
+            var ticketEntry = await DbContext.Tickets.AddAsync(ticket, cancellationToken);
+
+            await SaveChangesAsync(cancellationToken);
+
+            var attributeValueEntities = CreateAttributeValueEntities(ticketEntry.Entity.Id, attributeEntities);
+
+            await DbContext.AttributeValues.AddRangeAsync(attributeValueEntities, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
+
+            await transaction.CommitAsync(cancellationToken);
+            return ticket;
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
+    }
+
+    private static IEnumerable<AttributeValueEntity> CreateAttributeValueEntities(Guid ticketId, List<AttributeEntity> attributeEntities)
+    {
+        var groupedAttributes = attributeEntities
+                                .GroupBy(a => a.Type)
+                                .ToDictionary(g => g.Key, g => g.AsEnumerable());
+
+        return CreateTicketStagesAttributeValueEntities(ticketId, groupedAttributes[AttributeType.TicketStage]);
+    }
+
+    private static IEnumerable<AttributeValueEntity> CreateTicketStagesAttributeValueEntities(Guid ticketId, IEnumerable<AttributeEntity> attributeEntities)
+    {
+        return attributeEntities.Select(attribute => new AttributeValueEntity
+            {
+                Value = nameof(TicketStage.ToDo),
+                TicketId = ticketId,
+                AttributeId = attribute.Id,
+            }
+        );
+    }
 }

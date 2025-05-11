@@ -7,8 +7,7 @@ internal static class DbContextConfigurator
 {
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<TicketTracerDbContext>(
-            optionsBuilder =>
+        services.AddDbContext<TicketTracerDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseNpgsql(
                     configuration.GetConnectionString("Postgres")

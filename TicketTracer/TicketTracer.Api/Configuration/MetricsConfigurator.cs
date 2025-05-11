@@ -10,10 +10,9 @@ internal static class MetricsConfigurator
         services
             .AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(AppOptions.ResourceName))
-            .WithMetrics(
-                metrics => metrics
-                           .AddMeter(AppOptions.ResourceName)
-                           .AddPrometheusExporter()
+            .WithMetrics(metrics => metrics
+                                    .AddMeter(AppOptions.ResourceName)
+                                    .AddPrometheusExporter()
             );
     }
 }

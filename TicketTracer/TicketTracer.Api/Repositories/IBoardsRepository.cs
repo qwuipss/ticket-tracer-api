@@ -8,4 +8,6 @@ internal interface IBoardsRepository : IBaseRepository<BoardEntity>
     Task<bool> IsExistAsync(string title, CancellationToken cancellationToken);
 
     Task<List<BoardEntity>> GetAllByProjectIdAsync(Guid projectId, int offset, int limit, CancellationToken cancellationToken);
+
+    Task<List<AttributeEntity>> GetAttributesAsync(Guid id, CancellationToken cancellationToken);
 }

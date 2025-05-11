@@ -24,4 +24,20 @@ internal class UsersService(ILogger<UsersService> logger, IUsersRepository users
 
         return model;
     }
+
+    public async Task<List<UserEntity>?> GetAllAsync(int offset, int limit, CancellationToken cancellationToken)
+    {
+        var entities = await _usersRepository.GetAllAsync(offset, limit, cancellationToken);
+
+        _logger.LogInformation("Retrieved {count} tickets", entities.Count);
+
+        if (entities.Count is 0)
+        {
+            return null;
+        }
+
+        var models = _mapper.Map<List<UserEntity>, List<UserEntity>>(entities);
+
+        return models;
+    }
 }

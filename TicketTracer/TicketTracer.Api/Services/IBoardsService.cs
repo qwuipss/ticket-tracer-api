@@ -14,5 +14,7 @@ internal interface IBoardsService
 
     Task<List<BoardModel>?> GetAllByProjectIdAsync(Guid projectId, int offset, int limit, CancellationToken cancellationToken);
 
+    Task<List<AttributeModel>?> GetAttributesAsync(Guid id, CancellationToken cancellationToken);
+
     Task<OneOf<BoardModel, BoardExistsModel, ProjectNotFoundModel>> CreateAsync(CreateBoardModel model, CancellationToken cancellationToken);
 }

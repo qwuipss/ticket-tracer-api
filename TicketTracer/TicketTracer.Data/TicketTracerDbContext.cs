@@ -14,6 +14,10 @@ public class TicketTracerDbContext(DbContextOptions<TicketTracerDbContext> optio
 
     public DbSet<UserEntity> Users { get; init; }
 
+    public DbSet<AttributeEntity> Attributes { get; init; }
+
+    public DbSet<AttributeValueEntity> AttributeValues { get; init; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         var baseEntityType = typeof(BaseEntity);

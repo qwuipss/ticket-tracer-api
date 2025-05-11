@@ -36,6 +36,15 @@ internal class Program
         app.MapOpenApi();
         app.MapControllers();
 
+        app.Use(async (context, next) =>
+            {
+                Console.WriteLine(string.Join('\n', context.Request.Headers.Select(h => $"{h.Key}: {h.Value}")));
+                await next();
+                Console.WriteLine(string.Join('\n', context.Response.Headers.Select(h => $"{h.Key}: {h.Value}")));
+                Console.WriteLine();
+            }
+        );
+
         app.UsePathBase(builder.Configuration.GetValue<string>("PathBase") ?? throw new ArgumentException("'PathBase' setting is missing"));
         app.UseCors();
         app.UseExceptionLoggingMiddleware();

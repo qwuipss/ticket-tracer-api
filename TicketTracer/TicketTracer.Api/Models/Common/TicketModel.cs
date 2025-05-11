@@ -10,12 +10,10 @@ namespace TicketTracer.Api.Models.Common;
 internal class TicketModel : WithIdModel
 {
     [MaybeNull]
-    [MinLength(1)]
     [MaxLength(EntityConstraints.Ticket.TitleMaxLength)]
     public string Title { get; set; }
 
     [MaybeNull]
-    [MinLength(1)]
     [MaxLength(EntityConstraints.Ticket.DescriptionMaxLength)]
     public string Description { get; set; }
 

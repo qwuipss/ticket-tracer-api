@@ -10,5 +10,6 @@ internal static class RepositoriesConfigurator
         services.AddScoped<IBoardsRepository, BoardsRepository>();
         services.AddScoped<ITicketsRepository, TicketsRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IAttributesValuesRepository, AttributeValuesRepository>();
     }
 }
