@@ -14,6 +14,10 @@ internal class CreateTicketModel
     [Required(AllowEmptyStrings = false)]
     [MaxLength(EntityConstraints.Ticket.DescriptionMaxLength)]
     public string Description { get; set; } = null!;
+    
+    [Required]
+    public TicketType Type { get; set; }
 
+    [Required]
     public Guid BoardId { get; set; }
 }

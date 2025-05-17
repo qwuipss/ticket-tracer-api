@@ -20,6 +20,8 @@ internal class TicketModel : WithIdModel
     [Range(0, int.MaxValue)]
     public int Number { get; set; }
 
+    public TicketType Type { get; set; }
+
     public Guid BoardId { get; set; }
 
     public Guid AuthorId { get; set; }

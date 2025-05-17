@@ -92,6 +92,7 @@ internal class TicketsService(
         {
             Title = model.Title,
             Description = model.Description,
+            Type = model.Type,
             BoardId = model.BoardId,
             AuthorId = user.GetIdOrThrow(),
             Number = lastTicketNumber + 1,

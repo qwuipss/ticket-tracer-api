@@ -64,7 +64,9 @@ internal class TicketsRepository(TicketTracerDbContext dbContext) : BaseReposito
                                 .GroupBy(a => a.Type)
                                 .ToDictionary(g => g.Key, g => g.AsEnumerable());
 
-        return CreateTicketStagesAttributeValueEntities(ticketId, groupedAttributes[AttributeType.TicketStage]);
+        // var x = 
+        
+         return CreateTicketStagesAttributeValueEntities(ticketId, groupedAttributes[AttributeType.TicketStage]);
     }
 
     private static IEnumerable<AttributeValueEntity> CreateTicketStagesAttributeValueEntities(Guid ticketId, IEnumerable<AttributeEntity> attributeEntities)

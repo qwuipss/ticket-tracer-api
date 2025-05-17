@@ -16,10 +16,10 @@ internal class AttributesValuesController(ILogger<AttributesValuesController> lo
 
     #region Get
 
-    [HttpGet] [Route("")]
+    [HttpGet] [Route("{ticketId:guid}")]
     [ProducesResponseType<List<AttributeValueModel>>(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetAttributesValuesAsync([FromQuery] [Required] Guid ticketId)
+    public async Task<IActionResult> GetAttributesValuesAsync([FromRoute] Guid ticketId)
     {
         var models = await _attributesValuesService.GetAttributesValuesAsync(ticketId, HttpContext.RequestAborted);
         return models is null ? NotFound() : Ok(models);
@@ -30,7 +30,7 @@ internal class AttributesValuesController(ILogger<AttributesValuesController> lo
     #region Patch
 
     [HttpPatch] [Route("")]
-    [ProducesResponseType<List<AttributeValueModel>>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType<List<InvalidAttributeValueModel>>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> PutAttributeValueAsync([FromBody] AttributeValueModel model)

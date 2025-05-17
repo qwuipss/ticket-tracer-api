@@ -19,6 +19,9 @@ public class TicketEntity : BaseEntity
     [MaxLength(EntityConstraints.Ticket.DescriptionMaxLength)]
     public required string Description { get; set; }
 
+    [Column("type")]
+    public required TicketType Type { get; set; }
+    
     [Column("number")]
     public required int Number { get; set; }
 
@@ -33,4 +36,13 @@ public class TicketEntity : BaseEntity
 
     [ForeignKey(nameof(AuthorId))]
     public UserEntity Author { get; set; } = null!;
+}
+
+public enum TicketType
+{
+    Epic,
+    Story,
+    Task,
+    SubTask,
+    Bug,
 }

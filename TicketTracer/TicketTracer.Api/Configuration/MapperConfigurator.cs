@@ -19,6 +19,8 @@ internal static class MapperConfigurator
             CreateMap<BoardEntity, BoardModel>();
             CreateMap<TicketEntity, TicketModel>();
             CreateMap<UserEntity, UserModel>();
+            CreateMap<AttributeEntity, AttributeModel>();
+            CreateMap<AttributeValueEntity, AttributeValueModel>();
         }
     }
 }
