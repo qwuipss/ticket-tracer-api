@@ -21,7 +21,7 @@ public class TicketEntity : BaseEntity
 
     [Column("type")]
     public required TicketType Type { get; set; }
-    
+
     [Column("number")]
     public required int Number { get; set; }
 

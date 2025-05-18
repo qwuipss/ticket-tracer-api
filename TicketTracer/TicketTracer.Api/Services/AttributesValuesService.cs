@@ -51,7 +51,7 @@ internal class AttributesValuesService(
 
         switch (attributeType)
         {
-            case AttributeType.User when await ValidateAttributeValueWithTypeUserAsync(model.Value, cancellationToken):
+            case AttributeType.User when !await ValidateAttributeValueWithTypeUserAsync(model.Value, cancellationToken):
                 _logger.LogWarning(
                     "Validate value for attribute with type ({type}) failed. User with id ({id}) doesn't exist",
                     nameof(AttributeType.User),
@@ -73,7 +73,8 @@ internal class AttributesValuesService(
 
     private static bool ValidateAttributeValueWithTypeTicketStage(string value)
     {
-        return Enum.TryParse<AttributeType>(value, out _);
+        var attributeTypeNames = Enum.GetNames<TicketStage>();
+        return attributeTypeNames.Contains(value);
     }
 
     private async Task<AttributeType> GetAttributeTypeAsync(Guid attributeValueId, CancellationToken cancellationToken)

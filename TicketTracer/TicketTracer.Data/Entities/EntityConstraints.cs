@@ -35,6 +35,6 @@ public static class EntityConstraints
 
     public static class AttributeValue
     {
-        public const int ValueMaxLength = 32;
+        public const int ValueMaxLength = 64;
     }
 }

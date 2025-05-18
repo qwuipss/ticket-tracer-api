@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TicketTracer.Api.Controllers.Abstract;
@@ -8,7 +7,7 @@ using TicketTracer.Api.Services;
 
 namespace TicketTracer.Api.Controllers;
 
-[ApiController] [Route("[controller]")] [Authorize]
+[ApiController] [Route("attributes-values")] [Authorize]
 internal class AttributesValuesController(ILogger<AttributesValuesController> logger, IAttributesValuesService attributesValuesService) : AuthOpenApiControllerBase
 {
     private readonly IAttributesValuesService _attributesValuesService = attributesValuesService;

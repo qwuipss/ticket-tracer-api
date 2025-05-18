@@ -64,19 +64,29 @@ internal class TicketsRepository(TicketTracerDbContext dbContext) : BaseReposito
                                 .GroupBy(a => a.Type)
                                 .ToDictionary(g => g.Key, g => g.AsEnumerable());
 
-        // var x = 
-        
-         return CreateTicketStagesAttributeValueEntities(ticketId, groupedAttributes[AttributeType.TicketStage]);
+        var assigneeAttributeValueEntity = CreateAssigneeAttributeValueEntity(ticketId, groupedAttributes[AttributeType.User].Single());
+        var ticketStageAttributeValueEntity = CreateTicketStageAttributeValueEntity(ticketId, groupedAttributes[AttributeType.TicketStage].Single());
+
+        return [assigneeAttributeValueEntity, ticketStageAttributeValueEntity,];
     }
 
-    private static IEnumerable<AttributeValueEntity> CreateTicketStagesAttributeValueEntities(Guid ticketId, IEnumerable<AttributeEntity> attributeEntities)
+    private static AttributeValueEntity CreateAssigneeAttributeValueEntity(Guid ticketId, AttributeEntity attribute)
     {
-        return attributeEntities.Select(attribute => new AttributeValueEntity
-            {
-                Value = nameof(TicketStage.ToDo),
-                TicketId = ticketId,
-                AttributeId = attribute.Id,
-            }
-        );
+        return new AttributeValueEntity
+        {
+            Value = string.Empty,
+            TicketId = ticketId,
+            AttributeId = attribute.Id,
+        };
+    }
+
+    private static AttributeValueEntity CreateTicketStageAttributeValueEntity(Guid ticketId, AttributeEntity attribute)
+    {
+        return new AttributeValueEntity
+        {
+            Value = nameof(TicketStage.ToDo),
+            TicketId = ticketId,
+            AttributeId = attribute.Id,
+        };
     }
 }
