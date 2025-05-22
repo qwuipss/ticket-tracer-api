@@ -14,8 +14,8 @@ internal static class AuthConfigurator
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
                     options.Cookie.SameSite = SameSiteMode.Lax;
-                    options.Cookie.Expiration = TimeSpan.FromDays(7);
-                    options.SlidingExpiration = true;
+                    options.Cookie.MaxAge = TimeSpan.FromDays(7);
+                    options.ExpireTimeSpan = TimeSpan.FromDays(7);
                     options.Events = new CookieAuthenticationEvents
                     {
                         OnRedirectToLogin = context =>

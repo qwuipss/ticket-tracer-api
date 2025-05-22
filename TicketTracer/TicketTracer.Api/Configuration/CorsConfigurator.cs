@@ -15,8 +15,16 @@ internal static class CorsConfigurator
 
         services.AddCors(options =>
             {
-                options.AddDefaultPolicy(policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }
-                );
+                options
+                    .AddDefaultPolicy(policy =>
+                        {
+                            policy
+                                .WithOrigins(corsOptions!.AllowedOrigins)
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                        }
+                    );
             }
         );
     }
