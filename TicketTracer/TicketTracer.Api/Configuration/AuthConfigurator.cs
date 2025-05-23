@@ -12,7 +12,7 @@ internal static class AuthConfigurator
                 {
                     options.Cookie.Name = "ticket_tracer_auth";
                     options.Cookie.HttpOnly = true;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                     options.Cookie.SameSite = SameSiteMode.None;
                     options.Cookie.MaxAge = TimeSpan.FromDays(7);
                     options.ExpireTimeSpan = TimeSpan.FromDays(7);
